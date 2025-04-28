@@ -126,3 +126,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/'
 
 LOGIN_URL = '/login/'
+
+#define las rutas de los archivos multimedia
+MEDIA_URL = "/principal/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, 'principal', 'media')
+
+#parametros de la base de datos
+MONGODB_CONFIG = {'HOST': 'localhost',
+                  'PORT': 27017,
+                  'DB_NAME': 'portafolio',
+                  }

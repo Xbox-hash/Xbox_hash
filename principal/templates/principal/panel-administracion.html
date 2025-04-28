@@ -23,11 +23,19 @@
     </div><!-- End Section Title -->
 
     <div class="d-flex justify-content-center">
-        <form action="" method="post" enctype="multipart/form-data" data-aos="fade-up"
-            data-aos-delay="200" style="max-width: 600px; width: 100%;">
+        <form action="" method="post" enctype="multipart/form-data" data-aos="fade-up" data-aos-delay="200"
+            style="max-width: 600px; width: 100%;">
             {%csrf_token%}
 
             <div class="row gy-4">
+
+                <div class="d-flex justify-content-center mb-4">
+                    <a href="{% url 'listar_posteos' %}" class="btn btn-primary"
+                        style="background-color: #007bff; color: white;">
+                        Administrar posteos existentes
+                    </a>
+                </div>
+
 
                 <div class="col-md-12">
                     <label for="titulo-field" class="pb-2">Titulo</label>
@@ -45,7 +53,7 @@
                     <label for="categoria-field" class="pb-2">Categoria</label>
                     <select name="categoria" id="categoria-field" class="form-control">
                         <option value="web">Web</option>
-                        <option value="Back end">Backend</option>
+                        <option value="Backend">Backend</option>
                         <option value="java">Java</option>
                     </select>
                 </div>
@@ -63,7 +71,6 @@
                 <div class="col-md-12 text-center">
                     <div class="loading">Loading</div>
                     <div class="error-message"></div>
-                    <div class="sent-message">Your message has been sent. Thank you!</div>
                     <button type="submit">Postear</button>
                 </div>
             </div>

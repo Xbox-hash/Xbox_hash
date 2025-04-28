@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load static %}
+{% block contenido %}
+
+<section id="starter-section" class="starter-section section">
+
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+        <h2>Editar posteos</h2>
+    </div><!-- End Section Title -->
+
+    <div class="d-flex justify-content-center">
+        <form method="post" enctype="multipart/form-data" data-aos="fade-up" data-aos-delay="200"
+            style="max-width: 600px; width: 100%;">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="row gy-4">
+                <div class="col-md-12">
+                    <label for="titulo-field" class="pb-2">Titulo</label>
+                    <input type="text" placeholder="Ingrese el titulo" id="titulo-field" name="titulo"
+                        class="form-control" value="{{ post.titulo|default:'' }}" required>
+                </div>
+
+                <div class="col-md-12">
+                    <label for="descripcion-field" class="pb-2">Descripcion</label>
+                    <textarea name="descripcion" id="descripcion-field" class="form-control" rows="5"
+                        required>{{ post.descripcion }}</textarea>
+                </div>
+
+                <div class="col-md-12">
+                    <label for="categoria-field" class="pb-2">Categoría</label>
+                    <select name="categoria" id="categoria-field" class="form-control">
+                        <option value="web" {% if post.categoria == 'web' %}selected{% endif %}>Web</option>
+                        <option value="Backend" {% if post.categoria == 'Backend' %}selected{% endif %}>Backend</option>
+                        <option value="java" {% if post.categoria == 'java' %}selected{% endif %}>Java</option>
+                    </select>
+                </div>
+
+                <div class="col-md-12">
+                    <label class="pb-2">Imágenes actuales:</label>
+                    <div class="d-flex flex-wrap" style="gap: 10px;">
+                        {% for imagen in imagenes %}
+                        <div>
+                            <img src="/media/posteos/{{ post.id }}/{{ imagen }}" alt="Imagen" class="img-fluid" style="max-height: 200px; object-fit: cover;">
+                        </div>
+                        {% empty %}
+                        <p>No hay imágenes actualmente.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <label for="imagenes-field" class="pb-2">Subir nuevas imágenes</label>
+                    <input type="file" name="imagenes" id="imagenes-field" class="form-control" multiple>
+                </div>
+
+                <div class="col-md-12">
+                    <label for="fecha-field" class="pb-2">Fecha</label>
+                    <input type="date" name="fecha" id="fecha-field" class="form-control" value="{{ post.fecha }}">
+                </div>
+
+                <div class="col-md-12 text-center">
+                    <div class="error-message"></div>
+                    <button type="submit">Guardar</button>
+                </div>
+            </div>
+        </form>
+        <div class="mb-lg-0" style="text-align: left;">
+            <a href="{% url 'panel-administracion' %}" class="btn btn-primary" style="width: auto;">Volver al panel de administración</a>
+        </div>
+        
+        
+    </div>
+
+    <div class="container" data-aos="fade-up">
+    </div>
+
+</section><!-- /Starter Section Section -->
+
+{% endblock contenido %}

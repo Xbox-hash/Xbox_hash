@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+{% block contenido %}
+
+<!-- Page Title -->
+<div class="page-title dark-background">
+    <div class="container d-lg-flex justify-content-between align-items-center">
+        <h1 class="mb-2 mb-lg-0">Posteos</h1>
+        <nav class="breadcrumbs">
+            <ol>
+                <li><a href="{% url 'panel-administracion' %}">Panel de administración</a></li>
+                <li class="current">Posteos</li>
+            </ol>
+        </nav>
+    </div>
+</div><!-- End Page Title -->
+
+<!-- Tabla de Posteos -->
+<section class="section">
+    <div class="container" data-aos="fade-up">
+        <h2 class="mb-4">Listado de Posteos</h2>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Título</th>
+                        <th>Descripción</th>
+                        <th>Fecha</th>
+                        <th>Categoría</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for post in posteos %}
+                    <tr>
+                        <td>{{ post.titulo }}</td>
+                        <td>{{ post.descripcion }}</td>
+                        <td>{{ post.fecha }}</td>
+                        <td>{{ post.categoria }}</td>
+                        <td style="white-space: nowrap;">
+                            {% if post.id %}
+                            <a href="{% url 'editar' post.id %}" class="btn btn-warning btn-sm me-2">Editar</a>
+                            <a href="{% url 'eliminar' post.id %}" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este posteo?')">Eliminar</a>                            
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center">No hay posteos disponibles.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+{% endblock contenido %}

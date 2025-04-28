@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path
 from principal import views
 from django.contrib.auth.views import LoginView
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -29,4 +31,11 @@ urlpatterns = [
     path('login/', LoginView.as_view(template_name="login.html"), name="login"),
     path('logout/', views.logout_view, name="logout"),
     path('panel-administracion/', views.panel_admin, name="panel-administracion"),
+    path('panel-administracion/posteos/', views.listar_posteos, name="listar_posteos"),
+    path('panel-administracion/posteos/editar/<str:id>/', views.editar_posteo, name="editar"),
+    path('panel-administracion/posteos/eliminar/<str:id>/', views.elimimar_posteo, name="eliminar")
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    
