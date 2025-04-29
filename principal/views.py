@@ -7,7 +7,8 @@ from django.conf import settings
 import os
 from .utils.portfoliodb import conectar_db
 from bson import ObjectId
-from django.http import HttpResponse
+from django.utils.text import slugify
+
 
 
 def inicio(request):
@@ -36,18 +37,16 @@ def portfolio(request):
             "descripcion": descripcion,
             "categoria": categoria,
             "fecha": fecha,
-            "imagenes": imagenes,
+            "imagenes": imagenes  
         }
 
         posteo_db = conectar_db()
         posteo_db.find(posteos)
-
+       
     return render(request, "portfolio-details.html", {"posteos": posteos})
-
 
 def service(request):
     return render(request, "service-details.html")
-
 
 def starter(request):
     return render(request, "starter-page.html")
@@ -98,6 +97,7 @@ def listar_posteos(request):
         fecha = request.GET.get("fecha")
         imagenes = request.FILES.getlist("imagenes")
 
+
         posteos = {
             "titulo": titulo,
             "descripcion": descripcion,
@@ -119,12 +119,30 @@ def listar_posteos(request):
 # logica para editar posteos
 def editar_posteo(request, id):
     db = conectar_db()
-    
+    posteos = db.find_one({"_id": ObjectId(id)})
+
+    imagenes_guardadas = posteos.get("imagenes", [])
+
     if request.method == "POST":
         titulo = request.POST.get("titulo")
         descripcion = request.POST.get("descripcion")
         categoria = request.POST.get("categoria")
         fecha = request.POST.get("fecha")
+        imagenes = request.FILES.getlist("imagenes")
+        imagen_nueva = []
+
+        fs = FileSystemStorage(location=settings.MEDIA_ROOT)
+
+        for imagen in imagenes:
+            try:
+                nombre_archivo = slugify(imagen.name)
+                nombre_imagen = fs.save(nombre_archivo, imagen)
+                imagen_nueva.append(nombre_imagen)
+            except Exception as e:
+                print(f"Erro al cargar imagen {imagen.name}: {e}")
+
+        imagen = imagenes_guardadas + imagen_nueva
+        print("Lista final de imágenes:", imagen)
 
         db.update_one(
             {"_id": ObjectId(id)},
@@ -134,15 +152,21 @@ def editar_posteo(request, id):
                     "descripcion": descripcion,
                     "categoria": categoria,
                     "fecha": fecha,
+                    "imagenes": imagen,
                 }
             },
         )
-    posteos = db.find_one({"_id": ObjectId(id)})
+
+        return redirect("listar_posteos")
+
+    imagenes = posteos.get("imagenes", [])
+
     return render(
-        request, "editar-posteo.html", {"post": posteos}
+        request, "editar-posteo.html", {"post": posteos, "imagenes": imagenes}
     )
 
-def elimimar_posteo(request, id):
+
+def eliminar_posteo(request, id):
     db = conectar_db()
 
     posteo = db.find_one({"_id": ObjectId(id)})

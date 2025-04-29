@@ -30,9 +30,9 @@
                 <div class="col-md-12">
                     <label for="categoria-field" class="pb-2">Categoría</label>
                     <select name="categoria" id="categoria-field" class="form-control">
-                        <option value="web" {% if post.categoria == 'web' %}selected{% endif %}>Web</option>
-                        <option value="Backend" {% if post.categoria == 'Backend' %}selected{% endif %}>Backend</option>
-                        <option value="java" {% if post.categoria == 'java' %}selected{% endif %}>Java</option>
+                        <option value = "web" {% if post.categoria == 'web' %}selected{% endif %}>Web</option>
+                        <option value = "Backend" {% if post.categoria == 'Backend' %}selected{% endif %}>Backend</option>
+                        <option value = "java" {% if post.categoria == 'java' %}selected{% endif %}>Java</option>
                     </select>
                 </div>
 
@@ -41,7 +41,8 @@
                     <div class="d-flex flex-wrap" style="gap: 10px;">
                         {% for imagen in imagenes %}
                         <div>
-                            <img src="/media/posteos/{{ post.id }}/{{ imagen }}" alt="Imagen" class="img-fluid" style="max-height: 200px; object-fit: cover;">
+                            <img src="{{ imagen }}" alt=""
+                                style="max-height: 200px; object-fit: cover;">
                         </div>
                         {% empty %}
                         <p>No hay imágenes actualmente.</p>
@@ -49,8 +50,9 @@
                     </div>
                 </div>
 
+
                 <div class="col-md-12">
-                    <label for="imagenes-field" class="pb-2">Subir nuevas imágenes</label>
+                    <label for="imagenes-field" class="pb-2">Subir imágenes</label>
                     <input type="file" name="imagenes" id="imagenes-field" class="form-control" multiple>
                 </div>
 
@@ -66,10 +68,11 @@
             </div>
         </form>
         <div class="mb-lg-0" style="text-align: left;">
-            <a href="{% url 'panel-administracion' %}" class="btn btn-primary" style="width: auto;">Volver al panel de administración</a>
+            <a href="{% url 'panel-administracion' %}" class="btn btn-primary" style="width: auto;">Volver al panel de
+                administración</a>
         </div>
-        
-        
+
+
     </div>
 
     <div class="container" data-aos="fade-up">
