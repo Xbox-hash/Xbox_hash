@@ -7,7 +7,7 @@
     <h1 class="mb-2 mb-lg-0">Portfolio Details</h1>
     <nav class="breadcrumbs">
       <ol>
-        <li><a href="index.html">Home</a></li>
+        <li><a href="{% url 'inicio' %}">Home</a></li>
         <li class="current">Portfolio Details</li>
       </ol>
     </nav>
@@ -54,11 +54,11 @@
 
       <div class="col-lg-4">
         <div class="portfolio-info" data-aos="fade-up" data-aos-delay="200">
-          <h3>Project information</h3>
+          <h3>Información del Proyecto</h3>
           <ul>
             <li><strong>Categoria</strong>: {{ posteos.categoria }}</li>
             <li><strong>Fecha del proyecto</strong>: {{ posteos.fecha }}</li>
-            <li><strong>Project URL</strong>: <a href="#">www.example.com</a></li>
+            <li><strong>URL del Proyecto</strong>: <a href="{{posteos.github_url}}" target="_blank">{{ posteos.github_url}}</a></li>
           </ul>
         </div>
         <div class="portfolio-description" data-aos="fade-up" data-aos-delay="300">
@@ -69,7 +69,6 @@
         </div>
       </div>
     </div>
-
   </div>
 </section><!-- /Portfolio Details Section -->
 {%endblock contenido%}

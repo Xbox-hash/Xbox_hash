@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage, default_storage
@@ -7,8 +7,9 @@ from django.conf import settings
 import os
 from .utils.portfoliodb import conectar_db
 from bson import ObjectId
-from django.utils.text import slugify
-
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+from django.contrib import messages
 
 
 def inicio(request):
@@ -27,6 +28,7 @@ def portfolio(request):
     if request.method == "GET":
         titulo = request.GET.get("titulo")
         descripcion = request.GET.get("descripcion")
+        github_url = request.GET.get("github_url")
         categoria = request.GET.get("categoria")
         fecha = request.GET.get("fecha")
         imagenes_string = request.GET.get("imagenes", "")
@@ -35,6 +37,7 @@ def portfolio(request):
         posteos = {
             "titulo": titulo,
             "descripcion": descripcion,
+            "github_url": github_url,
             "categoria": categoria,
             "fecha": fecha,
             "imagenes": imagenes  
@@ -63,6 +66,7 @@ def panel_admin(request):
         # Aquí puedes manejar la lógica para guardar los datos del formulario
         titulo = request.POST.get("titulo")
         descripcion = request.POST.get("descripcion")
+        github_url = request.POST.get("github_url")
         categoria = request.POST.get("categoria")
         imagenes = request.FILES.getlist("imagenes")
         fecha = request.POST.get("fecha")
@@ -76,6 +80,7 @@ def panel_admin(request):
         trabajo = {
             "titulo": titulo,
             "descripcion": descripcion,
+            "github_url": github_url,
             "categoria": categoria,
             "imagenes": rutas_imagenes,
             "fecha": fecha,
@@ -84,15 +89,16 @@ def panel_admin(request):
         # e insertar nuevos trabajos
         trabajos_db = conectar_db()
         trabajos_db.insert_one(trabajo)
-        return redirect("inicio")
+        return redirect("panel-administracion")
 
     return render(request, "panel-administracion.html")
 
-
+@login_required
 def listar_posteos(request):
     if request.method == "GET":
         titulo = request.GET.get("titulo")
         descripcion = request.GET.get("descripcion")
+        github_url = request.GET.get("github_url")
         categoria = request.GET.get("categoria")
         fecha = request.GET.get("fecha")
         imagenes = request.FILES.getlist("imagenes")
@@ -101,6 +107,7 @@ def listar_posteos(request):
         posteos = {
             "titulo": titulo,
             "descripcion": descripcion,
+            "github_url": github_url,
             "categoria": categoria,
             "fecha": fecha,
             "imagenes": imagenes,
@@ -117,32 +124,32 @@ def listar_posteos(request):
 
 
 # logica para editar posteos
+@login_required
 def editar_posteo(request, id):
     db = conectar_db()
-    posteos = db.find_one({"_id": ObjectId(id)})
-
-    imagenes_guardadas = posteos.get("imagenes", [])
+    posteos = db.find
 
     if request.method == "POST":
         titulo = request.POST.get("titulo")
         descripcion = request.POST.get("descripcion")
+        github_url = request.POST.get("github_url")
         categoria = request.POST.get("categoria")
         fecha = request.POST.get("fecha")
-        imagenes = request.FILES.getlist("imagenes")
-        imagen_nueva = []
-
+        
+        nuevas_imagenes = request.FILES.getlist("imagenes")
         fs = FileSystemStorage(location=settings.MEDIA_ROOT)
 
-        for imagen in imagenes:
-            try:
-                nombre_archivo = slugify(imagen.name)
-                nombre_imagen = fs.save(nombre_archivo, imagen)
-                imagen_nueva.append(nombre_imagen)
-            except Exception as e:
-                print(f"Erro al cargar imagen {imagen.name}: {e}")
+        if nuevas_imagenes:
+            rutas_imagenes = posteos.get("imagenes", [])
+            for imagen in nuevas_imagenes:
+                nombre_imagen = fs.save(imagen.name, imagen)
+                ruta_completa = os.path.join(settings.MEDIA_URL, nombre_imagen)
+                rutas_imagenes.append(ruta_completa)
+        else:
+            rutas_imagenes = posteos.get("imagenes", [])
 
-        imagen = imagenes_guardadas + imagen_nueva
-        print("Lista final de imágenes:", imagen)
+
+
 
         db.update_one(
             {"_id": ObjectId(id)},
@@ -150,38 +157,53 @@ def editar_posteo(request, id):
                 "$set": {
                     "titulo": titulo,
                     "descripcion": descripcion,
+                    "github_url":github_url,
                     "categoria": categoria,
                     "fecha": fecha,
-                    "imagenes": imagen,
+                    "imagenes": rutas_imagenes,
                 }
             },
         )
 
         return redirect("listar_posteos")
 
-    imagenes = posteos.get("imagenes", [])
-
     return render(
-        request, "editar-posteo.html", {"post": posteos, "imagenes": imagenes}
+        request, "editar-posteo.html", {"post": posteos, "imagenes": posteos.get("imagenes", [])}
     )
-
 
 def eliminar_posteo(request, id):
     db = conectar_db()
-
-    posteo = db.find_one({"_id": ObjectId(id)})
-    print(posteo)
-
-    if posteo:
-        imagenes = posteo.get("imagenes", [])
-        print(imagenes)
-        fs = FileSystemStorage(location=settings.MEDIA_ROOT)
-        for imagen in imagenes:
-            nombre_imagen = imagen.split(settings.MEDIA_URL)[-1]
-            archivo_imagen = os.path.join(settings.MEDIA_ROOT, nombre_imagen)
-
-            if os.path.exists(archivo_imagen):
-                os.remove(archivo_imagen)
-
     db.delete_one({"_id": ObjectId(id)})
     return redirect("listar_posteos")
+
+def contacto(request):
+    if request.method == "POST":
+        nombre = request.POST["nombre"]
+        email = request.POST["email"]
+        asunto = request.POST["asunto"]
+        mensaje = request.POST["mensaje"]
+
+        template_email = render_to_string('email_template.html', {
+            "nombre": nombre,
+            "email": email,
+            "mensaje": mensaje
+        })
+
+        email = EmailMessage(
+            asunto,
+            template_email,
+            settings.EMAIL_HOST_USER,
+            ['t9834286@gmail.com']
+        )
+        email.fail_silently = False
+        try:
+            email.send()
+        except Exception as e:
+            print(f"Error al enviar correo: {str(e)}")
+        
+            messages.error(request, f"Hubo un error al enviar el mensaje: {str(e)}")
+        
+       
+        return HttpResponse('OK')
+    return HttpResponse("error", status=404)
+    

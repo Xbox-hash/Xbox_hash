@@ -50,6 +50,15 @@
                 </div>
 
                 <div class="col-md-12">
+                    <label for="github-field" class="pb-2">URL del repositorio GitHub</label>
+                    <input type="url" placeholder="https://github.com/usuario/repositorio" 
+                           id="github-field" name="github_url"
+                           class="form-control" value="{{ post.github_url|default:'' }}">
+                    <small id="github-error" style="color: red; display: none;">La URL debe comenzar con https://github.com/</small>
+                </div>
+                
+
+                <div class="col-md-12">
                     <label for="categoria-field" class="pb-2">Categoria</label>
                     <select name="categoria" id="categoria-field" class="form-control">
                         <option value="web">Web</option>
@@ -70,7 +79,6 @@
 
                 <div class="col-md-12 text-center">
                     <div class="loading">Loading</div>
-                    <div class="error-message"></div>
                     <button type="submit">Postear</button>
                 </div>
             </div>

@@ -28,11 +28,20 @@
                 </div>
 
                 <div class="col-md-12">
+                    <label for="github-field" class="pb-2">URL del repositorio GitHub</label>
+                    <input type="url" placeholder="https://github.com/usuario/repositorio" id="github-field"
+                        name="github_url" class="form-control" value="{{ post.github_url|default:'' }}">
+                    <small id="github-error" style="color: red; display: none;">La URL debe comenzar con
+                        https://github.com/</small>
+                </div>
+
+
+                <div class="col-md-12">
                     <label for="categoria-field" class="pb-2">Categoría</label>
                     <select name="categoria" id="categoria-field" class="form-control">
-                        <option value = "web" {% if post.categoria == 'web' %}selected{% endif %}>Web</option>
-                        <option value = "Backend" {% if post.categoria == 'Backend' %}selected{% endif %}>Backend</option>
-                        <option value = "java" {% if post.categoria == 'java' %}selected{% endif %}>Java</option>
+                        <option value= "web" {% if post.categoria == 'web' %}selected{% endif %}>Web</option>
+                        <option value= "Backend" {% if post.categoria == 'Backend' %}selected{% endif %}>Backend</option>
+                        <option value= "java" {% if post.categoria == 'java' %}selected{% endif %}>Java</option>
                     </select>
                 </div>
 
@@ -41,8 +50,7 @@
                     <div class="d-flex flex-wrap" style="gap: 10px;">
                         {% for imagen in imagenes %}
                         <div>
-                            <img src="{{ imagen }}" alt=""
-                                style="max-height: 200px; object-fit: cover;">
+                            <img src="{{ imagen }}" alt="" style="max-height: 200px; object-fit: cover;">
                         </div>
                         {% empty %}
                         <p>No hay imágenes actualmente.</p>
