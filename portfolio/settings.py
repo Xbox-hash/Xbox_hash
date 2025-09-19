@@ -25,7 +25,8 @@ SECRET_KEY = 'django-insecure-z8920rekk4j1@hg7hf7ufk@=^=nun*7^iv+ia)-x2=brby$py7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['xbox-hash.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ["*"]
+
 
 
 # Application definition
