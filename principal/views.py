@@ -127,7 +127,7 @@ def listar_posteos(request):
 @login_required
 def editar_posteo(request, id):
     db = conectar_db()
-    posteos = db.find
+    posteos = db.find_one({"_id": ObjectId(id)})
 
     if request.method == "POST":
         titulo = request.POST.get("titulo")
