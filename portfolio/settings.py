@@ -115,8 +115,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'assets/'
+# Static files (CSS, JavaScript, Images)
+STATIC_URL = '/assets/'  # recomendado poner con barra inicial
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "principal/assets")]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # nueva línea para collectstatic
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
