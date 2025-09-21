@@ -38,7 +38,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cloudinary',
+    'cloudinary_storage'
 ]
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'Ness',
+    'API_KEY': '124499471529967',
+    'API_SECRET': '1aHrPq0t6mrp8Itp_ldxAaiJKSg'
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
