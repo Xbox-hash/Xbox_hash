@@ -46,8 +46,8 @@ INSTALLED_APPS = [
 
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME', 'nessparr'),
-    'API_KEY': os.getenv('CLOUDINARY_API_KEY', '124499471529967'),
+    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME', 'root'),
+    'API_KEY': os.getenv('CLOUDINARY_API_KEY', '487885626288552'),
     'API_SECRET': os.getenv('CLOUDINARY_API_SECRET', 'bBez90am587kQY7lxRux5VETb0M'),
 }
 
