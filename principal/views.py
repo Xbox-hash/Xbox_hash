@@ -10,7 +10,7 @@ from bson import ObjectId
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.contrib import messages
-
+import cloudinary.uploader
 
 def inicio(request):
     coleccion = conectar_db()
@@ -63,7 +63,6 @@ def logout_view(request):
 @login_required
 def panel_admin(request):
     if request.method == "POST":
-        # Aquí puedes manejar la lógica para guardar los datos del formulario
         titulo = request.POST.get("titulo")
         descripcion = request.POST.get("descripcion")
         github_url = request.POST.get("github_url")
@@ -71,12 +70,14 @@ def panel_admin(request):
         imagenes = request.FILES.getlist("imagenes")
         fecha = request.POST.get("fecha")
 
-        fs = FileSystemStorage(location=settings.MEDIA_ROOT)
         rutas_imagenes = []
+
         for imagen in imagenes:
-            nombre_imagen = fs.save(imagen.name, imagen)
-            ruta_completa = os.path.join(settings.MEDIA_URL, nombre_imagen)
-            rutas_imagenes.append(ruta_completa)
+            # Subir a cloudinary
+            resultado = cloudinary.uploader.upload(imagen)
+            url_imagen = resultado.get('secure_url')  # URL segura en cloudinary
+            rutas_imagenes.append(url_imagen)
+
         trabajo = {
             "titulo": titulo,
             "descripcion": descripcion,
@@ -85,8 +86,7 @@ def panel_admin(request):
             "imagenes": rutas_imagenes,
             "fecha": fecha,
         }
-        # establecer la conexion con la base de datos
-        # e insertar nuevos trabajos
+
         trabajos_db = conectar_db()
         trabajos_db.insert_one(trabajo)
         return redirect("panel-administracion")
@@ -137,19 +137,15 @@ def editar_posteo(request, id):
         fecha = request.POST.get("fecha")
         
         nuevas_imagenes = request.FILES.getlist("imagenes")
-        fs = FileSystemStorage(location=settings.MEDIA_ROOT)
 
         if nuevas_imagenes:
             rutas_imagenes = posteos.get("imagenes", [])
             for imagen in nuevas_imagenes:
-                nombre_imagen = fs.save(imagen.name, imagen)
-                ruta_completa = os.path.join(settings.MEDIA_URL, nombre_imagen)
-                rutas_imagenes.append(ruta_completa)
+                resultado = cloudinary.uploader.upload(imagen)
+                url_imagen = resultado.get('secure_url')
+                rutas_imagenes.append(url_imagen)
         else:
             rutas_imagenes = posteos.get("imagenes", [])
-
-
-
 
         db.update_one(
             {"_id": ObjectId(id)},
@@ -157,7 +153,7 @@ def editar_posteo(request, id):
                 "$set": {
                     "titulo": titulo,
                     "descripcion": descripcion,
-                    "github_url":github_url,
+                    "github_url": github_url,
                     "categoria": categoria,
                     "fecha": fecha,
                     "imagenes": rutas_imagenes,
