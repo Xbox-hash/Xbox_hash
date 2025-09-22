@@ -15,6 +15,8 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+import cloudinary
+import os
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -42,13 +44,23 @@ INSTALLED_APPS = [
     'cloudinary_storage'
 ]
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'nessparr',
-    'API_KEY': '124499471529967',
-    'API_SECRET': 'bBez90am587kQY7lxRux5VETb0M'
+    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME', 'nessparr'),
+    'API_KEY': os.getenv('CLOUDINARY_API_KEY', '124499471529967'),
+    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET', 'bBez90am587kQY7lxRux5VETb0M'),
 }
+
+cloudinary.config(
+    cloud_name=CLOUDINARY_STORAGE['CLOUD_NAME'],
+    api_key=CLOUDINARY_STORAGE['API_KEY'],
+    api_secret=CLOUDINARY_STORAGE['API_SECRET'],
+    secure=True,
+)
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
