@@ -45,9 +45,9 @@ INSTALLED_APPS = [
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'Ness',
+    'CLOUD_NAME': 'nessparr',
     'API_KEY': '124499471529967',
-    'API_SECRET': '1aHrPq0t6mrp8Itp_ldxAaiJKSg'
+    'API_SECRET': 'bBez90am587kQY7lxRux5VETb0M'
 }
 
 MIDDLEWARE = [
