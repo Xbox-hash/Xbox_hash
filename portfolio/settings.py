@@ -77,19 +77,16 @@ TEMPLATES = [
 WSGI_APPLICATION = 'portfolio.wsgi.application'
 
 # Database (MongoDB Atlas)
-import os
-
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'portfolio_db',  # tu DB dentro de la URI
+        'NAME': os.environ.get('MONGO_DB', 'portafolio'),
         'ENFORCE_SCHEMA': False,
         'CLIENT': {
-            'host': os.environ['MONGO_URI']
+            'host': f"mongodb+srv://{os.environ.get('MONGO_USER')}:{os.environ.get('MONGO_PASS')}@{os.environ.get('MONGO_CLUSTER')}/{os.environ.get('MONGO_DB')}?retryWrites=true&w=majority"
         }
     }
 }
-
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
