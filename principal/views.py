@@ -11,6 +11,11 @@ from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.contrib import messages
 import cloudinary.uploader
+from django.template.loader import render_to_string
+from django.http import HttpResponse
+import logging
+
+logger = logging.getLogger(__name__)
 
 def inicio(request):
     coleccion = conectar_db()
@@ -174,32 +179,34 @@ def eliminar_posteo(request, id):
 
 def contacto(request):
     if request.method == "POST":
-        nombre = request.POST["nombre"]
-        email = request.POST["email"]
-        asunto = request.POST["asunto"]
-        mensaje = request.POST["mensaje"]
+        nombre = request.POST.get("nombre", "")
+        email_usuario = request.POST.get("email", "")
+        asunto = request.POST.get("asunto", "")
+        mensaje = request.POST.get("mensaje", "")
 
         template_email = render_to_string('email_template.html', {
             "nombre": nombre,
-            "email": email,
+            "email": email_usuario,
             "mensaje": mensaje
         })
 
-        email = EmailMessage(
+        email_msg = EmailMessage(
             asunto,
             template_email,
             settings.EMAIL_HOST_USER,
             ['t9834286@gmail.com']
         )
-        email.fail_silently = False
+
+        # Evitar que el worker falle
         try:
-            email.send()
+            email_msg.send(fail_silently=False)
         except Exception as e:
-            print(f"Error al enviar correo: {str(e)}")
-        
-            messages.error(request, f"Hubo un error al enviar el mensaje: {str(e)}")
-        
-       
+            # Loguear el error en Render y mostrar mensaje amigable
+            logger.error(f"Error al enviar correo: {str(e)}")
+            messages.error(request, "Hubo un error al enviar el mensaje. Intenta nuevamente más tarde.")
+            # Para Render, devolver 200 aunque falle el envío
+            return HttpResponse('OK')
+
         return HttpResponse('OK')
+
     return HttpResponse("error", status=404)
-    
