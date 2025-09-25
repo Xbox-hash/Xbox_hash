@@ -119,15 +119,22 @@ USE_TZ = True
 # Static files
 # ------------------------
 STATIC_URL = '/static/'
+
+# Carpeta donde Django buscará tus archivos estáticos en desarrollo
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "principal/assets")]
+
+# Carpeta donde Django recopilará los archivos para producción
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
+
+# WhiteNoise para servir archivos estáticos en producción
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # ------------------------
-# Media files
+# Media files (Cloudinary)
 # ------------------------
-MEDIA_URL = "/principal/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, 'principal', 'media')
+# Mantener Cloudinary como storage principal
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+MEDIA_URL = "/media/"  # Cloudinary sirve las medias directamente
 
 # ------------------------
 # Authentication
