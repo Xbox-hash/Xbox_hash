@@ -145,6 +145,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('SENDGRID_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASS')
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
 
