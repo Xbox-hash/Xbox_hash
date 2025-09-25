@@ -197,16 +197,12 @@ def contacto(request):
             ['t9834286@gmail.com']
         )
 
-        # Evitar que el worker falle
         try:
-            email_msg.send(fail_silently=False)
+            email_msg.send(fail_silently=True)  # No rompe el worker
+            return HttpResponse('OK')
         except Exception as e:
-            # Loguear el error en Render y mostrar mensaje amigable
             logger.error(f"Error al enviar correo: {str(e)}")
             messages.error(request, "Hubo un error al enviar el mensaje. Intenta nuevamente más tarde.")
-            # Para Render, devolver 200 aunque falle el envío
-            return HttpResponse('OK')
-
-        return HttpResponse('OK')
+            return HttpResponse('OK')  # Siempre devuelve 200 a Render
 
     return HttpResponse("error", status=404)

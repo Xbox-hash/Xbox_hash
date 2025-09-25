@@ -135,19 +135,20 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'principal', 'media')
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/login/'
 
+
 # ------------------------
-# Email
+# Email (Render seguro)
 # ------------------------
+EMAIL_BACKEND = os.environ.get(
+    "EMAIL_BACKEND",
+    "django.core.mail.backends.console.EmailBackend"  # Por defecto imprime los emails en consola
+)
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get('SENDGRID_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASS')
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-
+EMAIL_HOST = os.environ.get("EMAIL_HOST", "smtp.gmail.com")
+EMAIL_PORT = int(os.environ.get("EMAIL_PORT", 587))
+EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "True") == "True"
+EMAIL_HOST_USER = os.environ.get("EMAIL_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASS")
 
 # ------------------------
 # Default primary key
