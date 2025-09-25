@@ -1,20 +1,26 @@
 """
-Django settings for portfolio project.
+Django settings for portfolio project (Render + MongoDB via pymongo).
 """
 
 from pathlib import Path
 import os
 import cloudinary
 
+# ------------------------
 # Paths
+# ------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY
+# ------------------------
+# Security
+# ------------------------
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-default-key')
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
 
+# ------------------------
 # Applications
+# ------------------------
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -26,11 +32,13 @@ INSTALLED_APPS = [
     'cloudinary_storage',
 ]
 
+# ------------------------
 # Cloudinary
+# ------------------------
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ['CLOUDINARY_CLOUD_NAME'],
-    'API_KEY': os.environ['CLOUDINARY_API_KEY'],
-    'API_SECRET': os.environ['CLOUDINARY_API_SECRET'],
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
 }
 
 cloudinary.config(
@@ -42,8 +50,9 @@ cloudinary.config(
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-
+# ------------------------
 # Middleware
+# ------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -55,7 +64,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# URLs
+# ------------------------
+# URLs & Templates
+# ------------------------
 ROOT_URLCONF = 'portfolio.urls'
 
 TEMPLATES = [
@@ -76,47 +87,26 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'portfolio.wsgi.application'
 
-# Database (MongoDB Atlas)
-DATABASES = {
-    'default': {
-        'ENGINE': 'djongo',
-        'NAME': os.environ.get('MONGO_DB', 'portafolio'),
-        'ENFORCE_SCHEMA': False,
-        'CLIENT': {
-            'host': f"mongodb+srv://{os.environ.get('MONGO_USER')}:{os.environ.get('MONGO_PASS')}@{os.environ.get('MONGO_CLUSTER')}/{os.environ.get('MONGO_DB')}?retryWrites=true&w=majority"
-        }
-    }
-}
-
-# Password validation
-AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
-]
-
-# Internationalization
-LANGUAGE_CODE = 'es'
-TIME_ZONE = 'UTC'
-USE_I18N = True
-USE_TZ = True
-
-# Static files
+# ------------------------
+# Static & Media
+# ------------------------
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "principal/assets")]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 
-# Media files
 MEDIA_URL = "/principal/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, 'principal', 'media')
 
+# ------------------------
 # Authentication
+# ------------------------
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/login/'
 
+# ------------------------
 # Email
+# ------------------------
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
@@ -124,5 +114,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
 
+# ------------------------
 # Default primary key
+# ------------------------
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
