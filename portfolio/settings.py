@@ -1,3 +1,7 @@
+"""
+Django settings for portfolio project (Render + MongoDB via pymongo + Cloudinary).
+"""
+
 from pathlib import Path
 import os
 import cloudinary
@@ -10,12 +14,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ------------------------
 # Security
 # ------------------------
-SECRET_KEY = 'django-insecure-z8920rekk4j1@hg7hf7ufk@=^=nun*7^iv+ia)-x2=brby$py7'
-DEBUG = True
-ALLOWED_HOSTS = ["*"]
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-default-key')
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
 
-
+# ------------------------
 # Applications
+# ------------------------
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -27,7 +32,9 @@ INSTALLED_APPS = [
     'cloudinary_storage',
 ]
 
+# ------------------------
 # Cloudinary
+# ------------------------
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
     'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
@@ -43,7 +50,9 @@ cloudinary.config(
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
+# ------------------------
 # Middleware
+# ------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -55,7 +64,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# URLs
+# ------------------------
+# URLs & Templates
+# ------------------------
 ROOT_URLCONF = 'portfolio.urls'
 
 TEMPLATES = [
@@ -76,19 +87,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'portfolio.wsgi.application'
 
-# Database (MongoDB Atlas)
+# ------------------------
+# Database (solo para Django interno)
+# ------------------------
 DATABASES = {
     'default': {
-        'ENGINE': 'djongo',
-        'NAME': os.environ.get('MONGO_DB', 'portafolio'),
-        'ENFORCE_SCHEMA': False,
-        'CLIENT': {
-            'host': f"mongodb+srv://{os.environ.get('MONGO_USER')}:{os.environ.get('MONGO_PASS')}@{os.environ.get('MONGO_CLUSTER')}/{os.environ.get('MONGO_DB')}?retryWrites=true&w=majority"
-        }
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
+# ------------------------
 # Password validation
+# ------------------------
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -96,27 +107,37 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
+# ------------------------
 # Internationalization
+# ------------------------
 LANGUAGE_CODE = 'es'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
+# ------------------------
 # Static files
+# ------------------------
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "principal/assets")]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 
+# ------------------------
 # Media files
+# ------------------------
 MEDIA_URL = "/principal/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, 'principal', 'media')
 
+# ------------------------
 # Authentication
+# ------------------------
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/login/'
 
+# ------------------------
 # Email
+# ------------------------
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
@@ -124,5 +145,15 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
 
+# ------------------------
 # Default primary key
+# ------------------------
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# ------------------------
+# MongoDB Atlas (pymongo)
+# ------------------------
+MONGO_CLUSTER = os.environ.get('MONGO_CLUSTER')
+MONGO_DB = os.environ.get('MONGO_DB')
+MONGO_USER = os.environ.get('MONGO_USER')
+MONGO_PASS = os.environ.get('MONGO_PASS')
