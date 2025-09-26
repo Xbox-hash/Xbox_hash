@@ -72,15 +72,81 @@
     </div>
 
 
-    <nav id="navmenu" class="navmenu">
-      <ul>
-        <li><a href="{%url 'inicio' %}#hero" class="active"><i class="bi bi-house navicon"></i>Inicio</a></li>
-        <li><a href="{%url 'inicio' %}#about"><i class="bi bi-person navicon"></i> Sobre mi</a></li>
-        <li><a href="{%url 'inicio' %}#resume"><i class="bi bi-file-earmark-text navicon"></i> Curriculum</a></li>
-        <li><a href="{%url 'inicio' %}#portfolio"><i class="bi bi-images navicon"></i> Portfolio</a></li>
-        <li><a href="{%url 'inicio'%}#contact"><i class="bi bi-envelope navicon"></i> Contacto</a></li>
-      </ul>
-    </nav>
+<nav id="navmenu" class="navmenu mt-4">
+  <ul class="list-unstyled">
+    <li>
+      <a href="{%url 'inicio' %}#hero" class="active">
+        <i class="bi bi-house navicon"></i>
+        <span>Inicio</span>
+      </a>
+    </li>
+    <li>
+      <a href="{%url 'inicio' %}#about">
+        <i class="bi bi-person navicon"></i>
+        <span>Sobre mí</span>
+      </a>
+    </li>
+    <li>
+      <a href="{%url 'inicio' %}#resume">
+        <i class="bi bi-file-earmark-text navicon"></i>
+        <span>Curriculum</span>
+      </a>
+    </li>
+    <li>
+      <a href="{%url 'inicio' %}#portfolio">
+        <i class="bi bi-images navicon"></i>
+        <span>Portfolio</span>
+      </a>
+    </li>
+    <li>
+      <a href="{%url 'inicio'%}#contact">
+        <i class="bi bi-envelope navicon"></i>
+        <span>Contacto</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<!-- CSS Mejorado -->
+<style>
+  #navmenu {
+    padding: 15px 0;
+  }
+  #navmenu ul li {
+    margin: 12px 0;
+  }
+  #navmenu ul li a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+    color: #ddd;
+    padding: 10px 18px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+  #navmenu ul li a .navicon {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+  }
+  #navmenu ul li a:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    text-decoration: none;
+    transform: translateX(5px);
+  }
+  #navmenu ul li a:hover .navicon {
+    transform: scale(1.2);
+    color: #0d6efd;
+  }
+  #navmenu ul li a.active {
+    background: #0d6efd;
+    color: #fff;
+    font-weight: 600;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+  }
+</style>
+
   </header>
   <main>
     {% block contenido %}
