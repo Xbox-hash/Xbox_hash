@@ -198,11 +198,10 @@ def contacto(request):
         )
 
         try:
-            email_msg.send(fail_silently=True)  # No rompe el worker
+            email_msg.send(fail_silently=False)  # ahora sí muestra error real
             return HttpResponse('OK')
         except Exception as e:
-            logger.error(f"Error al enviar correo: {str(e)}")
-            messages.error(request, "Hubo un error al enviar el mensaje. Intenta nuevamente más tarde.")
-            return HttpResponse('OK')  # Siempre devuelve 200 a Render
+            print(f"Error al enviar correo: {e}")  # más simple para Render Logs
+            return HttpResponse('ERROR', status=500)
 
     return HttpResponse("error", status=404)
