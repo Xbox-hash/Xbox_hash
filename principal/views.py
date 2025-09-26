@@ -177,31 +177,3 @@ def eliminar_posteo(request, id):
     db.delete_one({"_id": ObjectId(id)})
     return redirect("listar_posteos")
 
-def contacto(request):
-    if request.method == "POST":
-        nombre = request.POST.get("nombre", "")
-        email_usuario = request.POST.get("email", "")
-        asunto = request.POST.get("asunto", "")
-        mensaje = request.POST.get("mensaje", "")
-
-        template_email = render_to_string('email_template.html', {
-            "nombre": nombre,
-            "email": email_usuario,
-            "mensaje": mensaje
-        })
-
-        email_msg = EmailMessage(
-            asunto,
-            template_email,
-            settings.EMAIL_HOST_USER,
-            ['t9834286@gmail.com']
-        )
-
-        try:
-            email_msg.send(fail_silently=False)  # ahora sí muestra error real
-            return HttpResponse('OK')
-        except Exception as e:
-            print(f"Error al enviar correo: {e}")  # más simple para Render Logs
-            return HttpResponse('ERROR', status=500)
-
-    return HttpResponse("error", status=404)

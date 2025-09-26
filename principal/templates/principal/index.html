@@ -430,111 +430,75 @@
     </div>
 
   </section><!-- /Portfolio Section -->
-  <!-- Contact Section -->
-  <section id="contact" class="contact section">
+ <!-- Contact Section -->
+<section id="contact" class="contact section">
 
-    <!-- Section Title -->
-    <div class="container section-title" data-aos="fade-up">
-      <h2>Contacto</h2>
-      <p>¿Tenés una idea, proyecto o consulta? No dudes en escribirme. Estoy disponible para colaboraciones, propuestas
-        de trabajo o cualquier pregunta relacionada con desarrollo de software.</p>
-    </div><!-- End Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Contacto</h2>
+    <p>¿Tenés una idea, proyecto o consulta? No dudes en escribirme. Estoy disponible para colaboraciones, propuestas
+      de trabajo o cualquier pregunta relacionada con desarrollo de software.</p>
+  </div><!-- End Section Title -->
 
-    <div class="container" data-aos="fade-up" data-aos-delay="100">
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="row gy-4">
 
-      <div class="row gy-4">
+      <div class="col-lg-5">
+        <div class="info-wrap">
 
-        <div class="col-lg-5">
-
-          <div class="info-wrap">
-            <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="200">
-              <i class="bi bi-geo-alt flex-shrink-0"></i>
-              <div>
-                <h3>Dirección</h3>
-                <p>Av. Calle 10</p>
-              </div>
-            </div><!-- End Info Item -->
-
-            <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="300">
-              <i class="bi bi-telephone flex-shrink-0"></i>
-              <div>
-                <h3>Para llamadas</h3>
-                <p>+595 982 615140</p>
-              </div>
-            </div><!-- End Info Item -->
-
-            <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="400">
-              <i class="bi bi-envelope flex-shrink-0"></i>
-              <div>
-                <h3>Email</h3>
-                <p>t9834286@gmail.com</p>
-              </div>
-            </div><!-- End Info Item -->
-
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d1576.4994563749617!2d-54.31723922063553!3d-24.04952272585278!3m2!1i1024!2i768!4f13.1!5e1!3m2!1ses-419!2spy!4v1745969461074!5m2!1ses-419!2spy"
-              width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"></iframe>
-          </div>
-        </div>
-
-        <div class="col-lg-7">
-
-
-          <form action="{% url 'contacto' %}" method="post" class="php-email-form" data-aos="fade-up"
-            data-aos-delay="200">
-            {% csrf_token %}
-            <div class="row gy-4">
-
-              <div class="col-md-6">
-                <label for="name-field" class="pb-2">Nombre</label>
-                <input type="text" name="nombre" id="name-field" class="form-control" required="">
-              </div>
-
-              <!-- Mostrar los mensajes de Django aquí -->
-              {% if messages %}
-              <div class="col-md-12">
-                {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}" role="alert">
-                  {{ message }}
-                </div>
-                {% endfor %}
-              </div>
-              {% endif %}
-
-              <div class="col-md-6">
-                <label for="email-field" class="pb-2">Email</label>
-                <input type="email" class="form-control" name="email" id="email-field" required="">
-              </div>
-
-              <div class="col-md-12">
-                <label for="subject-field" class="pb-2">Asunto</label>
-                <input type="text" class="form-control" name="asunto" id="subject-field" required="">
-              </div>
-
-              <div class="col-md-12">
-                <label for="message-field" class="pb-2">Mensaje</label>
-                <textarea class="form-control" name="mensaje" rows="10" id="message-field" required=""></textarea>
-              </div>
-
-              <div class="col-md-12 text-center">
-                <div class="loading">Cargando</div>
-                <div class="error-message">Hubo un error al enviar el mensaje</div>
-                <div class="sent-message">Su mensaje ha sido enviado. Muchas gracias!</div>
-
-                <button type="submit">Enviar Correo</button>
-              </div>
-
+          <!-- Dirección -->
+          <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="200">
+            <i class="bi bi-geo-alt flex-shrink-0"></i>
+            <div>
+              <h3>Dirección</h3>
+              <p>Av. Calle 10</p>
             </div>
-          </form>
+          </div><!-- End Info Item -->
 
+          <!-- Teléfono -->
+          <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="300">
+            <i class="bi bi-telephone flex-shrink-0"></i>
+            <div>
+              <h3>Para llamadas</h3>
+              <p>+595 982 615140</p>
+            </div>
+          </div><!-- End Info Item -->
 
+          <!-- Email -->
+          <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="400">
+            <i class="bi bi-envelope flex-shrink-0"></i>
+            <div>
+              <h3>Email</h3>
+              <p>t9834286@gmail.com</p>
+            </div>
+          </div><!-- End Info Item -->
 
-        </div><!-- End Contact Form -->
+          <!-- CV -->
+          <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="500">
+            <i class="bi bi-file-earmark-text flex-shrink-0"></i>
+            <div>
+              <h3>Currículum Vitae</h3>
+              <p>
+                <a href="{% static 'docs/CV_NelsonParra_ES.pdf' %}" class="btn btn-outline-primary btn-sm" download>
+                  Descargar CV (Español)
+                </a>
+                <a href="{% static 'docs/CV_NelsonParra_PT.pdf' %}" class="btn btn-outline-success btn-sm ms-2" download>
+                  Baixar CV (Português)
+                </a>
+              </p>
+            </div>
+          </div><!-- End Info Item -->
 
+        </div>
+      </div>
+
+      <div class="col-lg-7">
+        <!-- Aquí quedaría tu formulario de contacto -->
+        ...
       </div>
 
     </div>
+  </div>
 
-  </section><!-- /Contact Section -->
+</section><!-- /Contact Section -->
+
   {% endblock contenido %}
