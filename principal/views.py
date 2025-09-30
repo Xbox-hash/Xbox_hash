@@ -177,3 +177,38 @@ def eliminar_posteo(request, id):
     db.delete_one({"_id": ObjectId(id)})
     return redirect("listar_posteos")
 
+@login_required
+def configuracion(request):
+    if request.method == "POST":
+        foto_perfil = request.FILES.get("foto_perfil")
+        fondo = request.FILES.get("fondo")
+
+        data_update = {}
+
+        # Subir foto de perfil
+        if foto_perfil:
+            resultado = cloudinary.uploader.upload(foto_perfil)
+            data_update["foto_perfil"] = resultado.get("secure_url")
+
+        # Subir fondo
+        if fondo:
+            resultado = cloudinary.uploader.upload(fondo)
+            data_update["fondo"] = resultado.get("secure_url")
+
+        if data_update:
+            db = conectar_db()
+            # Guardamos en una colección "configuracion"
+            # Si existe, actualizamos el único documento
+            db_config = db.configuracion
+            existente = db_config.find_one({})
+            if existente:
+                db_config.update_one({"_id": existente["_id"]}, {"$set": data_update})
+            else:
+                db_config.insert_one(data_update)
+
+        return redirect("configuracion")
+
+    # GET → mostrar lo que ya está guardado
+    db = conectar_db()
+    configuracion = db.configuracion.find_one({}) or {}
+    return render(request, "configuracion.html", {"configuracion": configuracion})

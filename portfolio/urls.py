@@ -34,6 +34,7 @@ urlpatterns = [
     path('panel-administracion/posteos/', views.listar_posteos, name="listar_posteos"),
     path('panel-administracion/posteos/editar/<str:id>/', views.editar_posteo, name="editar"),
     path('panel-administracion/posteos/eliminar/<str:id>/', views.eliminar_posteo, name="eliminar"),
+    path('configuracion/', views.configuracion, name="configuracion"),
     
 ]
 
