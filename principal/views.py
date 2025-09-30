@@ -26,7 +26,7 @@ def inicio(request):
 
     db = conectar_db()
     configuracion = db.configuracion.find_one({}) or {}
-    
+
     return render(
         request, "index.html", {"trabajos": trabajos, "categoria": categorias_unicas,"configuracion": configuracion,}
     )
@@ -62,6 +62,13 @@ def service(request):
 
 def starter(request):
     return render(request, "starter-page.html")
+
+from django.shortcuts import redirect
+
+def login_view(request):
+    if request.user.is_authenticated:
+        return redirect('inicio')  # Redirige a la página principal o al dashboard
+    # lógica habitual para mostrar el formulario y procesar login
 
 
 def logout_view(request):

@@ -3,34 +3,35 @@
 {% block contenido %}
 <!-- Page Title -->
 <div class="page-title dark-background">
-    <div class="container d-lg-flex justify-content-between align-items-center">
-        <h1 class="mb-2 mb-lg-0">Inicio de Sesión</h1>
-        <nav class="breadcrumbs">
-            <ol>
-                <li><a href="index.html">Home</a></li>
-                <li class="current">Inicio de Sesión</li>
-            </ol>
-        </nav>
-    </div>
+  <div class="container d-lg-flex justify-content-between align-items-center">
+    <h1 class="mb-2 mb-lg-0">Inicio de Sesión</h1>
+    <nav class="breadcrumbs">
+      <ol>
+        <li><a href="index.html">Home</a></li>
+        <li class="current">Inicio de Sesión</li>
+      </ol>
+    </nav>
+  </div>
 </div><!-- End Page Title -->
 
 <!-- Inicio de Sesion Section -->
 <section id="starter-section" class="starter-section section">
-    <!-- Section Title -->
-    <div class="container section-title" data-aos="fade-up">
-        <h2>Inicio de Sesión</h2>
-    </div><!-- End Section Title -->
+  <!-- Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Inicio de Sesión</h2>
+  </div><!-- End Section Title -->
 
-    <div class="container" data-aos="fade-up">
-        {% if user.is_authenticated and user.username != "Admin" %}
-            <p>No tienes permisos para ver esta página.</p>
-        {% else %}
-            <form method="POST">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit">Ingresar</button>
-            </form>
-        {% endif %}
-    </div>
+  <div class="container" data-aos="fade-up">
+    {% if not user.is_authenticated or user.username == "Admin" %}
+    <form method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Ingresar</button>
+    </form>
+    {% else %}
+    <p>No tienes permisos para ver esta página.</p>
+    {% endif %}
+
+  </div>
 </section><!-- /Inicio de Sesion Section -->
 {% endblock contenido %}
