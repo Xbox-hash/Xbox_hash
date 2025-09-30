@@ -22,16 +22,12 @@
   </div><!-- End Section Title -->
 
   <div class="container" data-aos="fade-up">
-    {% if not user.is_authenticated or user.username == "Admin" %}
+    {% if user.is_authenticated and user.username == "Admin" %}
     <form method="POST">
       {% csrf_token %}
       {{ form.as_p }}
       <button type="submit">Ingresar</button>
     </form>
-    {% else %}
-    <p>No tienes permisos para ver esta página.</p>
-    {% endif %}
-
   </div>
 </section><!-- /Inicio de Sesion Section -->
 {% endblock contenido %}
