@@ -23,6 +23,10 @@ def inicio(request):
     categorias = coleccion.find({}, {"_id": 0, "categoria": 1})
     categorias_unicas = {doc["categoria"] for doc in categorias if "categoria" in doc}
     categorias_unicas = sorted(categorias_unicas)
+
+    db = conectar_db()
+    configuracion = db.configuracion.find_one({}) or {}
+    
     return render(
         request, "index.html", {"trabajos": trabajos, "categoria": categorias_unicas,"configuracion": configuracion,}
     )
