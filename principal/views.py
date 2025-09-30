@@ -24,7 +24,7 @@ def inicio(request):
     categorias_unicas = {doc["categoria"] for doc in categorias if "categoria" in doc}
     categorias_unicas = sorted(categorias_unicas)
     return render(
-        request, "index.html", {"trabajos": trabajos, "categoria": categorias_unicas}
+        request, "index.html", {"trabajos": trabajos, "categoria": categorias_unicas,"configuracion": configuracion,}
     )
 
 
