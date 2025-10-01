@@ -14,6 +14,7 @@ import cloudinary.uploader
 from django.template.loader import render_to_string
 from django.http import HttpResponse
 import logging
+from django.shortcuts import redirect
 
 logger = logging.getLogger(__name__)
 
@@ -62,13 +63,6 @@ def service(request):
 
 def starter(request):
     return render(request, "starter-page.html")
-
-from django.shortcuts import redirect
-
-def login_view(request):
-    if request.user.is_authenticated:
-        return redirect('inicio')  # Redirige a la página principal o al dashboard
-    # lógica habitual para mostrar el formulario y procesar login
 
 
 def logout_view(request):
