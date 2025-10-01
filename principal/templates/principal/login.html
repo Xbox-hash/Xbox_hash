@@ -14,41 +14,26 @@
   </div>
 </div>
 
-<section id="login-section" class="starter-section section py-5">
+<section id="starter-section" class="starter-section section py-5" style="background: #f5f5f5;">
   <div class="container" data-aos="fade-up">
     <div class="row justify-content-center">
       <div class="col-md-6">
-        <div class="card shadow-lg border-0">
-          <div class="card-body p-4">
-            <h2 class="card-title mb-4 text-center">Inicia Sesión</h2>
-
-            {% if not user.is_authenticated %}
+        <div class="card shadow-sm border-0 rounded-4">
+          <div class="card-body p-5">
+            <h2 class="card-title mb-4 text-center">Inicio de Sesión</h2>
             <form method="POST">
-              {% csrf_token %}
-              
-              {% for field in form %}
-              <div class="mb-3">
-                <label class="form-label">{{ field.label }}</label>
-                {{ field|add_class:"form-control" }}
-                {% if field.errors %}
-                  <div class="text-danger small mt-1">
-                    {{ field.errors }}
-                  </div>
-                {% endif %}
-              </div>
-              {% endfor %}
               
               <div class="d-grid mt-4">
-                <button type="submit" class="btn btn-primary btn-lg">Ingresar</button>
+                <button type="submit" class="btn btn-primary btn-lg rounded-pill">Ingresar</button>
               </div>
             </form>
-            {% else %}
+  
             <div class="alert alert-info text-center">
               Ya estás logueado como <strong>{{ user.username }}</strong>.<br>
-              <a href="{% url 'logout' %}" class="btn btn-outline-primary mt-2">Cerrar sesión</a>
+              <a href="{% url 'logout' %}" class="btn btn-outline-primary mt-2 rounded-pill">Cerrar sesión</a>
             </div>
             {% endif %}
-            
+
           </div>
         </div>
       </div>
