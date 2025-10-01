@@ -147,4 +147,3 @@ MONGO_CLUSTER = os.environ.get('MONGO_CLUSTER')
 MONGO_DB = os.environ.get('MONGO_DB')
 MONGO_USER = os.environ.get('MONGO_USER')
 MONGO_PASS = os.environ.get('MONGO_PASS')
-SESSION_EXPIRE_AT_BROWSER_CLOSE = False
