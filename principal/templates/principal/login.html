@@ -1,33 +1,59 @@
 {% extends "base.html" %}
 {% load static %}
 {% block contenido %}
-<div class="page-title dark-background">
+
+<div class="page-title dark-background py-5 text-white">
   <div class="container d-lg-flex justify-content-between align-items-center">
     <h1 class="mb-2 mb-lg-0">Inicio de Sesión</h1>
     <nav class="breadcrumbs">
-      <ol>
-        <li><a href="{% url 'inicio' %}">Home</a></li>
-        <li class="current">Inicio de Sesión</li>
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a href="{% url 'inicio' %}" class="text-white">Home</a></li>
+        <li class="breadcrumb-item active text-white">Inicio de Sesión</li>
       </ol>
     </nav>
   </div>
 </div>
 
-<section id="starter-section" class="starter-section section">
-  <div class="container section-title" data-aos="fade-up">
-    <h2>Inicio de Sesión</h2>
-  </div>
-
+<section id="login-section" class="starter-section section py-5">
   <div class="container" data-aos="fade-up">
-    {% if not user.is_authenticated %}
-    <form method="POST">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit">Ingresar</button>
-    </form>
-    {% else %}
-    <p>Ya estás logueado como {{ user.username }}. <a href="{% url 'logout' %}">Cerrar sesión</a></p>
-    {% endif %}
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card shadow-lg border-0">
+          <div class="card-body p-4">
+            <h2 class="card-title mb-4 text-center">Inicia Sesión</h2>
+
+            {% if not user.is_authenticated %}
+            <form method="POST">
+              {% csrf_token %}
+              
+              {% for field in form %}
+              <div class="mb-3">
+                <label class="form-label">{{ field.label }}</label>
+                {{ field|add_class:"form-control" }}
+                {% if field.errors %}
+                  <div class="text-danger small mt-1">
+                    {{ field.errors }}
+                  </div>
+                {% endif %}
+              </div>
+              {% endfor %}
+              
+              <div class="d-grid mt-4">
+                <button type="submit" class="btn btn-primary btn-lg">Ingresar</button>
+              </div>
+            </form>
+            {% else %}
+            <div class="alert alert-info text-center">
+              Ya estás logueado como <strong>{{ user.username }}</strong>.<br>
+              <a href="{% url 'logout' %}" class="btn btn-outline-primary mt-2">Cerrar sesión</a>
+            </div>
+            {% endif %}
+            
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
+
 {% endblock contenido %}
