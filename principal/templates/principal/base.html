@@ -167,14 +167,12 @@
       <div class="copyright text-center ">
         <p>
           {% if request.user.is_authenticated %}
-          <a href="{% url 'logout' %}">Cerrar Sesión</a>
-          <!-- Solo mostrar link a index si está autenticado -->
-          <a href="{% url 'index' %}">Inicio</a>
+            <a href="{% url 'logout' %}">Cerrar Sesion</a>
           {% else %}
-          <a href="{% url 'login' %}">Iniciar Sesión</a>
-          {% endif %}
+          
+          <a href="{% url 'login' %}">Iniciar Sesion</a>
+            {% endif %}
         </p>
-
 
         <p>© <span>Copyright</span> <strong class="px-1 sitename">iPortfolio</strong> <span>All Rights Reserved</span>
         </p>
