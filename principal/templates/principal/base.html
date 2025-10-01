@@ -167,9 +167,12 @@
       <div class="copyright text-center ">
         <p>
           {% if request.user.is_authenticated %}
+          <a href="{% url 'logout' %}">Cerrar Sesión</a>
+          <!-- Solo mostrar link a index si está autenticado -->
           <a href="{% url 'index' %}">Inicio</a>
+          {% else %}
+          <a href="{% url 'login' %}">Iniciar Sesión</a>
           {% endif %}
-
         </p>
 
 
