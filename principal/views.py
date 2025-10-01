@@ -32,13 +32,6 @@ def inicio(request):
         request, "index.html", {"trabajos": trabajos, "categoria": categorias_unicas,"configuracion": configuracion,}
     )
 
-def index(request):
-    # Aquí decides si mostrar o no el link de login
-    context = {
-        'mostrar_login': False  # lo pones True solo si quieres que el link aparezca
-    }
-    return render(request, 'index.html', context)
-
 
 def portfolio(request):
 
