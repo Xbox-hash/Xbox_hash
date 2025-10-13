@@ -55,8 +55,15 @@ def portfolio(request):
 
         posteo_db = conectar_db()
         posteo_db.find(posteos)
-       
-    return render(request, "portfolio-details.html", {"posteos": posteos})
+    configuracion = {
+        "foto_perfil": request.session.get("foto_perfil")  # o donde la guardes
+    }
+
+    return render(request, "portfolio-details.html", {
+        "posteos": posteos,
+        "configuracion": configuracion
+    })
+
 
 def service(request):
     return render(request, "service-details.html")
